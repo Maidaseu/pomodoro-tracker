@@ -35,3 +35,25 @@ function updateDisplay() {
   timerDisplay.textContent = formatTime(timeLeft);
   minsDisplay.textContent = `${selectedMins} minutes`;
 }
+
+// Increases selected time by 5 minutes up to the maximum
+function increaseMins() {
+  // Only allow changes when timer is not running
+  if (isRunning) return;
+  if (selectedMins < MAX_MINS) {
+    selectedMins += STEP;
+    timeLeft = selectedMins * 60;
+    updateDisplay();
+  }
+}
+
+// Decreases selected time by 5 minutes down to the minimum
+function decreaseMins() {
+  // Only allow changes when timer is not running
+  if (isRunning) return;
+  if (selectedMins > MIN_MINS) {
+    selectedMins -= STEP;
+    timeLeft = selectedMins * 60;
+    updateDisplay();
+  }
+}
