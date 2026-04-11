@@ -26,7 +26,38 @@ def index():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    return render_template("register.html")
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        confirmation = request.form.get("confirmation")
+
+        if not username:
+            return "Username is required", 400
+        elif not password:
+            return "Password is required", 400
+        elif not confirmation:
+            return "Please confirm your password", 400
+        elif password != confirmation:
+            return "Passwords do not match", 400
+
+        conn = get_db()
+        existing = conn.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
+
+        if existing:
+            conn.close()
+            return "Username already exists", 400
+
+        conn.execute("INSERT INTO users (username, hash) VALUES (?, ?)",
+                     (username, generate_password_hash(password)))
+        conn.commit()
+
+        user = conn.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
+        session["user_id"] = user["id"]
+        conn.close()
+
+        return redirect("/")
+    else:
+        return render_template("register.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
