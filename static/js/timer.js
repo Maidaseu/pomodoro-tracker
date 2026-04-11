@@ -57,3 +57,31 @@ function decreaseMins() {
     updateDisplay();
   }
 }
+
+// Starts the countdown timer
+function startTimer() {
+  // Prevent starting if already running
+  if (isRunning) return;
+  isRunning = true;
+
+  // setInterval calls this every 1000ms (1 second)
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateDisplay();
+
+    // When timer hits zero
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      isRunning = false;
+
+      // Save the completed session to the database
+      saveSession(selectedMins);
+
+      alert("Pomodoro complete! Great work.");
+
+      // Reset for next session
+      timeLeft = selectedMins * 60;
+      updateDisplay();
+    }
+  }, 1000);
+}
