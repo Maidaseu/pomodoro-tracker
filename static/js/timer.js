@@ -85,3 +85,17 @@ function startTimer() {
     }
   }, 1000);
 }
+
+// Pauses the timer without resetting it
+function pauseTimer() {
+  clearInterval(timerInterval);
+  isRunning = false;
+}
+
+// Resets the timer back to the selected minutes
+function resetTimer() {
+  clearInterval(timerInterval);
+  isRunning = false;
+  timeLeft = selectedMins * 60;
+  updateDisplay();
+}
