@@ -3,11 +3,22 @@
 {% block main %}
 <div class="timer-container">
     <h1>Pomodoro Timer</h1>
+
+    <!-- Minute selector -->
+    <div class="mins-selector">
+        <button id="decreaseBtn">-</button>
+        <span id="selected-mins">25 minutes</span>
+        <button id="increaseBtn">+</button>
+    </div>
+
+    <!-- Countdown display -->
     <div id="timer">25:00</div>
+
+    <!-- Timer controls -->
     <div class="controls">
-        <button id="start">Start</button>
-        <button id="pause">Pause</button>
-        <button id="reset">Reset</button>
+        <button id="startBtn">Start</button>
+        <button id="pauseBtn">Pause</button>
+        <button id="resetBtn">Reset</button>
     </div>
 </div>
 {% endblock %}
