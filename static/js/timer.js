@@ -108,3 +108,13 @@ function saveSession(duration) {
     body: JSON.stringify({ duration: duration }),
   });
 }
+
+// Attach all functions to their buttons
+startBtn.addEventListener("click", startTimer);
+pauseBtn.addEventListener("click", pauseTimer);
+resetBtn.addEventListener("click", resetTimer);
+increaseBtn.addEventListener("click", increaseMins);
+decreaseBtn.addEventListener("click", decreaseMins);
+
+// Initialise the display on page load
+updateDisplay();
