@@ -90,3 +90,26 @@ def logout():
 
 if __name__ == "__main__":
     app.run()
+
+    from flask import Flask, redirect, render_template, request, session, jsonify
+import json
+from datetime import date
+
+@app.route("/save_session", methods=["POST"])
+@login_required
+def save_session():
+    data = request.get_json()
+    duration = data.get("duration")
+
+    if not duration:
+        return jsonify({"error": "No duration provided"}), 400
+
+    conn = get_db()
+    conn.execute(
+        "INSERT INTO sessions (user_id, duration, date) VALUES (?, ?, ?)",
+        (session["user_id"], duration, date.today().isoformat())
+    )
+    conn.commit()
+    conn.close()
+
+    return jsonify({"success": True})
