@@ -99,3 +99,12 @@ function resetTimer() {
   timeLeft = selectedMins * 60;
   updateDisplay();
 }
+
+// Sends the completed session to Flask to save in the database
+function saveSession(duration) {
+  fetch("/save_session", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ duration: duration }),
+  });
+}
