@@ -4,6 +4,7 @@
 <div class="stats-container">
     <h1>Your Stats</h1>
 
+    <!-- Summary cards -->
     <div class="stats-grid">
         <div class="stat-card">
             <h2>All Time</h2>
@@ -17,8 +18,13 @@
             <h2>This Month</h2>
             <p>{{ month }} minutes</p>
         </div>
+        <div class="stat-card">
+            <h2>This Year</h2>
+            <p>{{ year }} minutes</p>
+        </div>
     </div>
 
+    <!-- Daily breakdown -->
     <h2>Last 30 Days</h2>
     <table class="stats-table">
         <thead>
@@ -31,6 +37,29 @@
             {% for row in daily %}
             <tr>
                 <td>{{ row["date"] }}</td>
+                <td>{{ row["total"] }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="2">No sessions yet</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Monthly breakdown -->
+    <h2>Last 12 Months</h2>
+    <table class="stats-table">
+        <thead>
+            <tr>
+                <th>Month</th>
+                <th>Minutes</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in monthly %}
+            <tr>
+                <td>{{ row["month"] }}</td>
                 <td>{{ row["total"] }}</td>
             </tr>
             {% else %}
