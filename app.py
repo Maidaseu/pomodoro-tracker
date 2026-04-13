@@ -113,3 +113,42 @@ def save_session():
     conn.close()
 
     return jsonify({"success": True})
+
+@app.route("/stats")
+@login_required
+def stats():
+    conn = get_db()
+    user_id = session["user_id"]
+
+    # Total minutes all time
+    total = conn.execute(
+        "SELECT SUM(duration) as total FROM sessions WHERE user_id = ?",
+        (user_id,)
+    ).fetchone()
+
+    # Today's total
+    today = conn.execute(
+        "SELECT SUM(duration) as total FROM sessions WHERE user_id = ? AND date = ?",
+        (user_id, date.today().isoformat())
+    ).fetchone()
+
+    # This month's total
+    month = conn.execute(
+        "SELECT SUM(duration) as total FROM sessions WHERE user_id = ? AND strftime('%Y-%m', date) = strftime('%Y-%m', 'now')",
+        (user_id,)
+    ).fetchone()
+
+    # Daily breakdown - last 30 days
+    daily = conn.execute(
+        "SELECT date, SUM(duration) as total FROM sessions WHERE user_id = ? GROUP BY date ORDER BY date DESC LIMIT 30",
+        (user_id,)
+    ).fetchall()
+
+    conn.close()
+
+    return render_template("stats.html",
+        total=total["total"] or 0,
+        today=today["total"] or 0,
+        month=month["total"] or 0,
+        daily=daily
+    )
