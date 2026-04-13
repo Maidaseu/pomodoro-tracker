@@ -138,9 +138,21 @@ def stats():
         (user_id,)
     ).fetchone()
 
+    # This year's total
+    year = conn.execute(
+        "SELECT SUM(duration) as total FROM sessions WHERE user_id = ? AND strftime('%Y', date) = strftime('%Y', 'now')",
+        (user_id,)
+    ).fetchone()
+
     # Daily breakdown - last 30 days
     daily = conn.execute(
         "SELECT date, SUM(duration) as total FROM sessions WHERE user_id = ? GROUP BY date ORDER BY date DESC LIMIT 30",
+        (user_id,)
+    ).fetchall()
+
+    # Monthly breakdown - last 12 months
+    monthly = conn.execute(
+        "SELECT strftime('%Y-%m', date) as month, SUM(duration) as total FROM sessions WHERE user_id = ? GROUP BY month ORDER BY month DESC LIMIT 12",
         (user_id,)
     ).fetchall()
 
@@ -150,5 +162,8 @@ def stats():
         total=total["total"] or 0,
         today=today["total"] or 0,
         month=month["total"] or 0,
-        daily=daily
+        year=year["total"] or 0,
+        daily=daily,
+        monthly=monthly
     )
+
