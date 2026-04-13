@@ -100,13 +100,22 @@ function resetTimer() {
   updateDisplay();
 }
 
-// Sends the completed session to Flask to save in the database
+// Sends the completed session to Flask and handles any errors
 function saveSession(duration) {
   fetch("/save_session", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ duration: duration }),
-  });
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (!data.success) {
+        console.error("Failed to save session:", data.error);
+      }
+    })
+    .catch((error) => {
+      console.error("Network error:", error);
+    });
 }
 
 // Attach all functions to their buttons
