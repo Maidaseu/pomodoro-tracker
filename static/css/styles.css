@@ -132,3 +132,76 @@ main {
   border-color: #e05c5c;
   color: #ffffff;
 }
+
+/* Centre auth forms with max width */
+.auth-container {
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.auth-container h1 {
+  font-size: 24px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+/* Stack form inputs vertically */
+.auth-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Dark input fields with red focus border */
+.auth-container input {
+  background: #1a1a24;
+  border: 1px solid #2a2a3a;
+  color: #ffffff;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: "Inter", sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.auth-container input:focus {
+  border-color: #e05c5c;
+}
+
+/* Solid red submit button */
+.auth-container button {
+  background: #e05c5c;
+  border: none;
+  color: #ffffff;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.auth-container button:hover {
+  background: #ff7070;
+}
+
+/* Muted helper text below form */
+.auth-container p {
+  font-size: 13px;
+  color: #a0a0b0;
+}
+
+/* Red link for register/login toggle */
+.auth-container p a {
+  color: #e05c5c;
+  text-decoration: none;
+}
+
+.auth-container p a:hover {
+  text-decoration: underline;
+}
