@@ -205,3 +205,83 @@ main {
 .auth-container p a:hover {
   text-decoration: underline;
 }
+
+/* Stats page - stack sections vertically */
+.stats-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.stats-container h1 {
+  font-size: 24px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.stats-container h2 {
+  font-size: 16px;
+  font-weight: 500;
+  color: #a0a0b0;
+}
+
+/* Responsive grid for stat cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+/* Individual stat card - dark with border */
+.stat-card {
+  background: #1a1a24;
+  border: 1px solid #2a2a3a;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Small uppercase label */
+.stat-card h2 {
+  font-size: 13px;
+  font-weight: 400;
+  color: #a0a0b0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Large red number */
+.stat-card p {
+  font-size: 28px;
+  font-weight: 500;
+  color: #e05c5c;
+}
+
+/* Clean borderless table */
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+/* Muted column headers */
+.stats-table th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  color: #a0a0b0;
+  font-weight: 400;
+  border-bottom: 1px solid #2a2a3a;
+}
+
+/* Table rows with subtle hover */
+.stats-table td {
+  padding: 0.75rem 1rem;
+  color: #e0e0e0;
+  border-bottom: 1px solid #1a1a24;
+}
+
+.stats-table tr:hover td {
+  background: #1a1a24;
+}
