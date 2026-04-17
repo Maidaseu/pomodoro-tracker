@@ -58,3 +58,20 @@ flask run
 5. Check your Stats page to see your productivity over time
 
 ## Project Structure
+
+## Project Structure
+
+pomodoro-tracker/
+├── app.py                 # Flask routes
+├── database.py            # SQLite database setup
+├── helpers.py             # Utility functions
+├── templates/
+│   ├── layout.html        # Base template
+│   ├── index.html         # Timer page
+│   ├── login.html         # Login page
+│   ├── register.html      # Registration page
+│   └── stats.html         # Statistics page
+├── static/
+│   ├── css/styles.css     # Styling
+│   └── js/timer.js        # Timer logic
+└── pomodoro.db            # SQLite database
