@@ -285,3 +285,21 @@ main {
 .stats-table tr:hover td {
   background: #1a1a24;
 }
+
+/* Adjustments for smaller screens */
+@media (max-width: 600px) {
+  /* Shrink the timer display on mobile */
+  #timer {
+    font-size: 56px;
+  }
+
+  /* Two column grid on mobile */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Tighter nav spacing on mobile */
+  nav ul {
+    gap: 1rem;
+  }
+}
