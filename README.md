@@ -16,6 +16,12 @@ A productivity app that helps you track your Pomodoro sessions with customizable
 - **User Accounts** — Register and login to track your personal stats
 - **Dark Mode UI** — Clean, minimal design optimized for focus
 
+- ## Live Demo
+
+Try the app here: **https://pomodoro-tracker-tysz.onrender.com**
+
+(Note: The free tier may take 50 seconds to load on first visit)
+
 ## Tech Stack
 
 - **Backend:** Python Flask
