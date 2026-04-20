@@ -2,6 +2,8 @@
 
 {% block main %}
 <div class="auth-container">
+    <!-- Error message display -->
+<div id="error-message" class="error-message" style="display: none;"></div>
     <h1>Login</h1>
     <form action="/login" method="post">
         <input type="text" name="username" placeholder="Username" required>
