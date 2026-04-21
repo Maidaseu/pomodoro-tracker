@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<div class="auth-container">
+    <!-- Error message display that's hidden by default -->
+    <div id="error-message" class="error-message" style="display: none;"></div>
+    
+    <h1>Forgot Password</h1>
+    
+    <!-- Form with id for JavaScript targeting -->
+    <form id="forgot-form">
+        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+        <button type="submit">Send Reset Link</button>
+    </form>
+    
+    <!-- Navigation back to login -->
+    <p><a href="/login">Back to login</a></p>
+</div>
