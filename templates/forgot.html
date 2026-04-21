@@ -16,3 +16,52 @@
     <!-- Navigation back to login -->
     <p><a href="/login">Back to login</a></p>
 </div>
+
+<script>
+// Listen for form submission
+document.getElementById('forgot-form').addEventListener('submit', async (e) => {
+    // Prevent page reload
+    e.preventDefault();
+    
+    // Get form values
+    const username = document.getElementById('username').value;
+    const errorDiv = document.getElementById('error-message');
+    
+    // Clear previous messages
+    errorDiv.style.display = 'none';
+    errorDiv.textContent = '';
+    
+    try {
+        // Create form data
+        const formData = new FormData();
+        formData.append('username', username);
+        
+        // Send to Flask backend
+        const response = await fetch('/forgot', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (response.ok) {
+            // Success - show reset link
+            const text = await response.text();
+            errorDiv.textContent = text;
+            errorDiv.style.display = 'block';
+            // Style as success (green)
+            errorDiv.style.background = '#44ff44';
+            errorDiv.style.border = '1px solid #00cc00';
+        } else {
+            // Error - show error message
+            const text = await response.text();
+            errorDiv.textContent = text;
+            errorDiv.style.display = 'block';
+        }
+    } catch (error) {
+        // Network error
+        errorDiv.textContent = 'An error occurred. Please try again.';
+        errorDiv.style.display = 'block';
+    }
+});
+</script>
+
+{% endblock %}
