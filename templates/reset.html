@@ -14,3 +14,58 @@
         <button type="submit">Reset Password</button>
     </form>
 </div>
+
+<script>
+// Listen for form submission
+document.getElementById('reset-form').addEventListener('submit', async (e) => {
+    // Prevent page reload
+    e.preventDefault();
+    
+    // Get form values
+    const password = document.getElementById('password').value;
+    const confirmation = document.getElementById('confirmation').value;
+    const errorDiv = document.getElementById('error-message');
+    
+    // Clear previous messages
+    errorDiv.style.display = 'none';
+    errorDiv.textContent = '';
+    
+    try {
+        // Create form data
+        const formData = new FormData();
+        formData.append('password', password);
+        formData.append('confirmation', confirmation);
+        
+        // Get token from URL
+        const token = window.location.pathname.split('/').pop();
+        
+        // Send to Flask backend
+        const response = await fetch(`/reset/${token}`, {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (response.ok) {
+            // Success - redirect to login
+            errorDiv.textContent = 'Password reset successfully! Redirecting to login...';
+            errorDiv.style.display = 'block';
+            errorDiv.style.background = '#44ff44';
+            errorDiv.style.border = '1px solid #00cc00';
+            setTimeout(() => {
+                window.location.href = '/login';
+            }, 2000);
+        } else {
+            // Error - show error message
+            const text = await response.text();
+            errorDiv.textContent = text;
+            errorDiv.style.display = 'block';
+        }
+    } catch (error) {
+        // Network error
+        errorDiv.textContent = 'An error occurred. Please try again.';
+        errorDiv.style.display = 'block';
+    }
+});
+</script>
+
+{% endblock %}
