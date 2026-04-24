@@ -91,6 +91,35 @@ def logout():
     session.clear()
     return redirect("/")
 
+    @app.route("/forgot", methods=["GET", "POST"])
+def forgot():
+    if request.method == "POST":
+        username = request.form.get("username")
+        
+        if not username:
+            return "Username is required", 400
+        
+        conn = get_db()
+        user = conn.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
+        
+        if not user:
+            return "Username not found", 404
+        
+        # Generate reset token (valid for 1 hour)
+        token = token_urlsafe(32)
+        expires_at = datetime.now() + timedelta(hours=1)
+        
+        conn.execute(
+            "INSERT INTO reset_tokens (user_id, token, expires_at) VALUES (?, ?, ?)",
+            (user["id"], token, expires_at.isoformat())
+        )
+        conn.commit()
+        conn.close()
+        
+        return f"Reset link: http://127.0.0.1:5000/reset/{token}"
+    
+    return render_template("forgot.html")
+
 if __name__ == "__main__":
     app.run()
 
