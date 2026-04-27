@@ -91,7 +91,7 @@ def logout():
     session.clear()
     return redirect("/")
 
-    @app.route("/forgot", methods=["GET", "POST"])
+@app.route("/forgot", methods=["GET", "POST"])
 def forgot():
     if request.method == "POST":
         username = request.form.get("username")
@@ -120,12 +120,45 @@ def forgot():
     
     return render_template("forgot.html")
 
-if __name__ == "__main__":
-    app.run()
-
-    from flask import Flask, redirect, render_template, request, session, jsonify
-import json
-from datetime import date
+@app.route("/reset/<token>", methods=["GET", "POST"])
+def reset(token):
+    if request.method == "POST":
+        new_password = request.form.get("password")
+        confirm_password = request.form.get("confirmation")
+        
+        if not new_password or not confirm_password:
+            return "Both fields required", 400
+        
+        if new_password != confirm_password:
+            return "Passwords do not match", 400
+        
+        conn = get_db()
+        reset_token = conn.execute(
+            "SELECT * FROM reset_tokens WHERE token = ?", (token,)
+        ).fetchone()
+        
+        if not reset_token:
+            return "Invalid token", 400
+        
+        # Check if token has expired
+        if datetime.fromisoformat(reset_token["expires_at"]) < datetime.now():
+            return "Token has expired", 400
+        
+        # Update password
+        user_id = reset_token["user_id"]
+        conn.execute(
+            "UPDATE users SET hash = ? WHERE id = ?",
+            (generate_password_hash(new_password), user_id)
+        )
+        
+        # Delete the used token
+        conn.execute("DELETE FROM reset_tokens WHERE token = ?", (token,))
+        conn.commit()
+        conn.close()
+        
+        return "Password reset successful"
+    
+    return render_template("reset.html", token=token)
 
 @app.route("/save_session", methods=["POST"])
 @login_required
@@ -152,37 +185,31 @@ def stats():
     conn = get_db()
     user_id = session["user_id"]
 
-    # Total minutes all time
     total = conn.execute(
         "SELECT SUM(duration) as total FROM sessions WHERE user_id = ?",
         (user_id,)
     ).fetchone()
 
-    # Today's total
     today = conn.execute(
         "SELECT SUM(duration) as total FROM sessions WHERE user_id = ? AND date = ?",
         (user_id, date.today().isoformat())
     ).fetchone()
 
-    # This month's total
     month = conn.execute(
         "SELECT SUM(duration) as total FROM sessions WHERE user_id = ? AND strftime('%Y-%m', date) = strftime('%Y-%m', 'now')",
         (user_id,)
     ).fetchone()
 
-    # This year's total
     year = conn.execute(
         "SELECT SUM(duration) as total FROM sessions WHERE user_id = ? AND strftime('%Y', date) = strftime('%Y', 'now')",
         (user_id,)
     ).fetchone()
 
-    # Daily breakdown - last 30 days
     daily = conn.execute(
         "SELECT date, SUM(duration) as total FROM sessions WHERE user_id = ? GROUP BY date ORDER BY date DESC LIMIT 30",
         (user_id,)
     ).fetchall()
 
-    # Monthly breakdown - last 12 months
     monthly = conn.execute(
         "SELECT strftime('%Y-%m', date) as month, SUM(duration) as total FROM sessions WHERE user_id = ? GROUP BY month ORDER BY month DESC LIMIT 12",
         (user_id,)
@@ -199,3 +226,5 @@ def stats():
         monthly=monthly
     )
 
+if __name__ == "__main__":
+    app.run()
