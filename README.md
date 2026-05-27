@@ -1,6 +1,6 @@
 # Pomodoro Tracker
 
-#### Video Demo: https://youtu.be/92ZsZwCzcpE?si=BgZX0ywwlVVyb62K
+#### Video Demo:[Private - Submitted to CS50]
 
 #### Description:
 
